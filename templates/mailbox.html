@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Mailbox: {{ address }}</h1>
+<p class="muted">No real email is sent in this lab — this page stands in for an SMTP catcher.</p>
+{% if mails|length == 0 %}
+  <p class="muted">Empty.</p>
+{% else %}
+  <table>
+    <tr><th>Subject</th><th>Body</th></tr>
+    {% for m in mails %}
+    <tr>
+      <td>{{ m['subject'] }}</td>
+      <td>{{ m['body'] }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+{% endif %}
+{% endblock %}

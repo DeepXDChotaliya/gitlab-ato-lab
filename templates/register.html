@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Create account</h1>
+<form method="post">
+  <label>Email</label>
+  <input type="email" name="email" required>
+  <label>Password</label>
+  <input type="password" name="password" required minlength="6">
+  <button type="submit">Register</button>
+</form>
+<p class="muted" style="margin-top:16px;">Tip for the demo: register both victim@example.com and attacker@example.com.</p>
+{% endblock %}

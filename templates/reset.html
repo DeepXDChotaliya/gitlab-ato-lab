@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+{% if valid %}
+  <h1>Set a new password</h1>
+  <form method="post">
+    <label>New password</label>
+    <input type="password" name="password" required minlength="6">
+    <button type="submit">Update password</button>
+  </form>
+{% else %}
+  <h1>Invalid or expired link</h1>
+  <p class="muted">This reset token doesn't exist or has already been used.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Forgot password</h1>
+<p>
+  Mode:
+  {% if vuln_on %}
+    <span class="badge vuln">VULNERABLE</span>
+  {% else %}
+    <span class="badge patched">PATCHED</span>
+  {% endif %}
+</p>
+
+<form id="forgotForm">
+  <label>Email</label>
+  <input type="email" id="email" name="email" required>
+  <button type="submit">Send reset link</button>
+</form>
+<p id="result" class="muted" style="margin-top:14px;"></p>
+
+<hr style="border-color:#30363d; margin:24px 0;">
+
+<p class="muted"><strong>Attack notes (for the video):</strong></p>
+<p class="muted">
+  This form submits a plain JSON body to <code>POST /forgot-password</code>:
+</p>
+<pre>{"email": "victim@example.com"}</pre>
+<p class="muted">Intercept that request in Burp and change it to:</p>
+<pre>{"email": ["victim@example.com", "attacker@example.com"]}</pre>
+<p class="muted">
+  In VULNERABLE mode, the account is resolved from the first address but the
+  reset link is mailed to every address in the array - check
+  <code>/mailbox/attacker@example.com</code> after forwarding the request.
+</p>
+
+<script>
+document.getElementById('forgotForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('email').value;
+  const res = await fetch('{{ url_for("forgot_password") }}', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email })
+  });
+  const data = await res.json();
+  document.getElementById('result').textContent = data.message || data.error;
+});
+</script>
+{% endblock %}

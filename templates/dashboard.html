@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Welcome, {{ user['email'] }}</h1>
+<p>
+  Mode:
+  {% if vuln_on %}
+    <span class="badge vuln">VULNERABLE</span>
+  {% else %}
+    <span class="badge patched">PATCHED</span>
+  {% endif %}
+</p>
+<p class="muted">
+  This toggle exists only so you can film both behaviours without restarting the server.
+  In a real app this would obviously never be a runtime switch.
+</p>
+<form method="get" action="{{ url_for('toggle_mode') }}">
+  <button type="submit">Switch to {{ "patched" if vuln_on else "vulnerable" }} mode</button>
+</form>
+<p style="margin-top:20px;">
+  <a class="link" href="{{ url_for('forgot_password') }}">Go to forgot-password flow</a><br>
+  <a class="link" href="{{ url_for('mailbox', address=user['email']) }}">View my mailbox</a>
+</p>
+{% endblock %}
